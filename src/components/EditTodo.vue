@@ -1,18 +1,21 @@
 <template>
   <div>
-    <form v-on:submit.prevent="updateTodo">
+    <form v-on:submit.prevent="updateTodoText">
       <div class="form-group">
         <label for="todoTitle"> Input todo </label><br>
-        <input v-model="item.task" type="text" class="form-control">
+        <input v-model="taskEditText" type="text" class="form-control">
         <label for="todoTitle" class="form-text text-muted"><small>* Required</small></label><br>
       </div>
       <div class="form-group">
         <label for="todoTitle"> Description </label><br>
-        <input v-model="item.description" type="text" class="form-control"><br>
+        <input v-model="descriptionEditText" type="text" class="form-control"><br>
       </div>
       <button type="button" class="btn btn-primary">
         Cancel </button>&nbsp;
-      <input type="submit" class="btn btn-primary" value="Save" />
+      <router-link to="/">
+    <button type="submit" class="btn btn-primary" v-on:click="updateTodoText()">
+      Save </button>
+    </router-link>
     </form>
   </div>
 </template>
@@ -43,20 +46,11 @@ export default {
   methods: {
     getTodo () {
       this.currentlyEditing = this.$route.params.id
-      var docRef = db.collection('todos').doc(this.currentlyEditing)
-      docRef.get().then(function (doc) {
-        if (doc.exists) {
-          console.log('Document data:', doc.data())
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!')
-        }
-      }).catch(function (error) {
-        console.log('Error getting document:', error)
-      })
+      this.taskEditText = this.$route.params.task
+      this.descriptionEditText = this.$route.params.description
     },
     updateTodoText () {
-      db.collection('todos').doc(this.currentlyEditing).update({
+      db.collection('todos').doc(this.$route.params.id).update({
         task: this.taskEditText,
         description: this.descriptionEditText
       }).then(function (doc) {

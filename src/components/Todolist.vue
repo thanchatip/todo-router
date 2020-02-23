@@ -7,7 +7,7 @@
         <p class="card-text">{{ todo.description }}</p>
         <div class="row">
           <div class="col-auto mr-auto">
-              <router-link :to="{name: 'Edit', params: { id: todo.id }}" class="btn btn-primary">Edit</router-link>
+              <router-link :to="{name: 'Edit', params: { id: todo.id , task:todo.task , description:todo.description}}" class="btn btn-primary">Edit</router-link>
                 &nbsp;
               <button
                   class="btn btn-danger" v-on:click="removeTodo(todo.id)"> Delete </button>&nbsp;
