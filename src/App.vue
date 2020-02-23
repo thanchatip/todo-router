@@ -11,10 +11,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <router-link to="/" class="nav-link"> Todo List <span class="sr-only">(current)</span></router-link>
+            <router-link :to="{ name: 'List' }" class="nav-link"> Todo List <span class="sr-only">(current)</span></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/create" class="nav-link"> Create
+            <router-link :to="{ name: 'Create' }" class="nav-link"> Create
               <span class="sr-only">(current)</span></router-link>
           </li>
         </ul>

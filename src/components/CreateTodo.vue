@@ -14,7 +14,7 @@
       Cancel </button>
     </router-link>&nbsp;
     <router-link to="/">
-    <button type="button" class="btn btn-primary" v-on:click="saveTodo(), showCreate = false , showTodo = true">
+    <button type="button" class="btn btn-primary" v-on:click="saveTodo()">
       Save </button>
     </router-link>
   </div>

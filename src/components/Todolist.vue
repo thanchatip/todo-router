@@ -1,29 +1,28 @@
 <template>
-<div>
-  <br>
-      <div class="card mb-2" v-for="(todo , index) in todos" v-bind:key="todo.id">
-        <div class="card-body">
-          <h5 class="card-title">{{ todo.task }}</h5>
-          <p class="card-text">{{ todo.description }}</p>
-          <div class="row">
-            <div class="col-auto mr-auto">
-              <router-link to="/edit">
-              <button v-on:click="editTodo(todo)" class="btn btn-primary"> Edit
-              </button>
-              </router-link>
-              &nbsp;
-              <button class="btn btn-danger" v-on:click="removeTodo(todo.id)"> Delete </button>&nbsp;
-            </div>
-            <div class="col-auto">
-              <button v-if="index !== 0" type="button" class="btn btn-outline-info" v-on:click="moveUp(index)"> Up
-              </button>&nbsp;
-              <button v-if="index !== todos.length-1" type="button" class="btn btn-outline-info"
-                v-on:click="moveDown(index)"> Down </button><br>
-            </div>
+  <div>
+    <br>
+    <div class="card mb-2" v-for="(todo , index) in todos" v-bind:key="todo.id">
+      <div class="card-body">
+        <h5 class="card-title">{{ todo.task }}</h5>
+        <p class="card-text">{{ todo.description }}</p>
+        <div class="row">
+          <div class="col-auto mr-auto">
+              <router-link :to="{name: 'Edit', params: { id: todo.id }}" class="btn btn-primary">Edit</router-link>
+                &nbsp;
+              <button
+                  class="btn btn-danger" v-on:click="removeTodo(todo.id)"> Delete </button>&nbsp;
+          </div>
+          <div class="col-auto">
+            <button v-if="index !== 0" type="button" class="btn btn-outline-info" v-on:click="moveUp(index)"> Up
+            </button>&nbsp;
+            <button v-if="index !== todos.length-1" type="button" class="btn btn-outline-info"
+              v-on:click="moveDown(index)"> Down </button><br>
+          <router-view/>
           </div>
         </div>
       </div>
-</div>
+    </div>
+  </div>
 </template>
 
 <!--firebase config-->
@@ -39,7 +38,6 @@
 
   export default {
     name: 'List',
-    props:['task','description'],
     data() {
       return {
         todos: [],
@@ -65,6 +63,10 @@
       this.loadTodo();
     },
     methods: {
+      editTodo(){
+        let todoTask = this.todo.Task;
+        this.$emit('editThisTodo',todoTask)
+      },
       loadTodo() {
         let todolist = [];
         db.collection('todos').get().then(function (querySnapshot) {
@@ -78,11 +80,6 @@
           });
         });
         this.todos = todolist;
-      },
-      editTodo(todo) {
-        this.currentlyEditing = todo.id;
-        this.taskEditText = todo.task;
-        this.descriptionEditText = todo.description;
       },
       removeTodo(collectionID) {
         db.collection('todos').doc(collectionID).delete().then(function () {}).catch(function (error) {
