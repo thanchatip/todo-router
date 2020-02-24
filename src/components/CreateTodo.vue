@@ -1,22 +1,25 @@
 <template>
   <div>
-    <div class="form-group">
-      <label for="todoTitle"> Input todo </label><br>
-      <input v-model="newTask" type="text" class="form-control">
-      <label for="todoTitle" class="form-text text-muted"><small>* Required</small></label><br>
-    </div>
-    <div class="form-group">
-      <label for="todoTitle"> Description </label><br>
-      <input v-model="newDescription" type="text" class="form-control"><br>
-    </div>
-    <router-link to='/'>
-    <button type="button" class="btn btn-primary">
-      Cancel </button>
-    </router-link>&nbsp;
-    <router-link to="/">
-    <button type="button" class="btn btn-primary" v-on:click="saveTodo()">
+    <form v-on:submit.prevent="saveTodo">
+      <div v-if="emptySave" class="alert alert-danger" role="alert">
+        Please Enter Todo !!!
+      </div>
+      <div class="form-group">
+        <label for="todoTitle"> Input todo </label><br>
+        <input v-model="newTask" v-on:click="emptySave = false" type="text" class="form-control">
+        <label for="todoTitle" class="form-text text-muted"><small>* Required</small></label><br>
+      </div>
+      <div class="form-group">
+        <label for="todoTitle"> Description </label><br>
+        <input v-model="newDescription"  type="text" class="form-control"><br>
+      </div>
+      <router-link to="/">
+      <button type="button" class="btn btn-primary">
+        Cancel </button>
+      </router-link>&nbsp;
+    <button type="submit" class="btn btn-primary">
       Save </button>
-    </router-link>
+    </form>
   </div>
 </template>
 
@@ -45,7 +48,6 @@
         isEmpty: false,
         currentlyEditing: null,
         taskEditText: '',
-        descriptionEditText: '',
         emptySave: false
       }
     },
@@ -56,14 +58,15 @@
     },
     methods: {
       saveTodo() {
-        // const todo = []
-        if (this.newTask && this.newDescription !== false) {
+        if (this.newTask.trim().length!== 0) {
           db.collection('todos').add({
             task: this.newTask,
             description: this.newDescription
-          }).then(this.newTask = '', this.newDescription = '')
+          }).then(console.log((this.newTask.trim().length)),this.newTask = '', this.newDescription = '',console.log('saved !!'),this.$router.push({path:'/'}))
+        }else{
+          console.log("empty")
+          return this.emptySave = true
         }
-        console.log('saved !!')
       }
     }
   }
