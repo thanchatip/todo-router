@@ -1,10 +1,10 @@
 <template>
   <div>
     <br>
-    <div class="card mb-2" v-for="(todo , index) in todos" v-bind:key="todo.id">
-      <div v-if="!todos.length " class="alert alert-info" role="alert">
+    <div v-if="todos.length===0" class="alert alert-info" role="alert">
       ไม่มี Todo
     </div>
+    <div class="card mb-2" v-for="(todo , index) in todos" v-bind:key="todo.id">
       <div class="card-body">
         <h5 class="card-title">{{ todo.task }}</h5>
         <p class="card-text">{{ todo.description }}</p>
