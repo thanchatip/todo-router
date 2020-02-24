@@ -10,7 +10,8 @@
         <p class="card-text">{{ todo.description }}</p>
         <div class="row">
           <div class="col-auto mr-auto">
-              <router-link :to="{name: 'Edit', params: { id: todo.id , task:todo.task , description:todo.description}}" class="btn btn-primary">Edit</router-link>
+              <router-link :to="{name: 'Edit',params: { id: todo.id , task:todo.task , description:todo.description}}"
+               class="btn btn-primary">Edit</router-link>
                 &nbsp;
               <button
                   class="btn btn-danger" v-on:click="removeTodo(todo.id)"> Delete </button>&nbsp;
@@ -66,10 +67,6 @@
       this.loadTodo();
     },
     methods: {
-      editTodo(){
-        let todoTask = this.todo.Task;
-        this.$emit('editThisTodo',todoTask)
-      },
       loadTodo() {
         let todolist = [];
         db.collection('todos').get().then(function (querySnapshot) {
@@ -85,7 +82,8 @@
         this.todos = todolist;
       },
       removeTodo(collectionID) {
-        db.collection('todos').doc(collectionID).delete().then(function () {}).catch(function (error) {
+        db.collection('todos').doc(collectionID).delete().then(function () {})
+        .catch(function (error) {
           console.error("Error removing document: ", error);
         });
         this.loadTodo();
